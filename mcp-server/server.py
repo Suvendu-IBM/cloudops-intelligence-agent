@@ -1,171 +1,77 @@
 import json
 import logging
-import sys
-from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict
+
+from mcp.server.fastmcp import FastMCP
 
 from cost_analyzer import main as analyze_cost_main
 from executive_report import main as generate_executive_report_main
 from risk_analyzer import main as analyze_risk_main
 
 
-logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
-LOGGER = logging.getLogger("cloudops-mcp-server")
+SERVER_NAME = "cloudops-intelligence-mcp"
+SERVER_VERSION = "1.0.0"
+
+logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(name)s - %(message)s")
+LOGGER = logging.getLogger(SERVER_NAME)
+
+mcp = FastMCP(
+    name=SERVER_NAME,
+    instructions=(
+        "CloudOps Intelligence Agent MCP server for Microsoft 365 Copilot. "
+        "Capabilities: "
+        "(1) Cloud cost optimization analysis — identifies underutilized resources across Azure, AWS, and GCP and recommends rightsizing actions with savings estimates. "
+        "(2) Cloud risk assessment — evaluates backup posture, storage utilization, and public endpoint exposure, producing risk findings and remediation recommendations. "
+        "(3) Executive cloud governance reporting — combines cost and risk intelligence into a unified report with cloud health score, maturity level, and top recommendations. "
+        "Supports multi-cloud environments: Azure, AWS, and GCP. "
+        "Designed for integration with Microsoft 365 Copilot via the Model Context Protocol (MCP)."
+    ),
+)
 
 
-@dataclass
-class ToolDefinition:
-    """Defines an MCP tool and the Python handler backing it."""
+@mcp.tool(description="Analyze cloud cost optimization opportunities across Azure, AWS, and GCP.")
+def analyze_cost() -> Dict[str, Any]:
+    """Return cost analysis with underutilized resources, recommendations, and savings."""
+    LOGGER.info("Tool execution started: analyze_cost")
+    try:
+        result = json.loads(analyze_cost_main())
+        LOGGER.info("Tool execution completed: analyze_cost")
+        return result
+    except Exception as error:
+        LOGGER.error("Tool execution failed: analyze_cost — %s", error)
+        raise
 
-    name: str
-    description: str
-    input_schema: Dict[str, Any]
-    handler: Callable[[], str]
+
+@mcp.tool(description="Analyze operational and security risk findings across cloud resources.")
+def analyze_risk() -> Dict[str, Any]:
+    """Return risk findings, recommendations, and executive risk summary."""
+    LOGGER.info("Tool execution started: analyze_risk")
+    try:
+        result = json.loads(analyze_risk_main())
+        LOGGER.info("Tool execution completed: analyze_risk")
+        return result
+    except Exception as error:
+        LOGGER.error("Tool execution failed: analyze_risk — %s", error)
+        raise
 
 
-class CloudOpsMCPServer:
-    """A minimal MCP server that communicates via JSON-RPC on stdio."""
-
-    def __init__(self) -> None:
-        self.server_info = {"name": "cloudops-intelligence-mcp", "version": "1.0.0"}
-        self.tools: Dict[str, ToolDefinition] = {}
-        self._register_tools()
-
-    def _register_tools(self) -> None:
-        """Register MCP tools exposed to Microsoft 365 Copilot."""
-        empty_schema = {"type": "object", "properties": {}, "additionalProperties": False}
-
-        self.tools["analyze_cost"] = ToolDefinition(
-            name="analyze_cost",
-            description="Analyze cloud cost optimization opportunities.",
-            input_schema=empty_schema,
-            handler=analyze_cost_main,
-        )
-        self.tools["analyze_risk"] = ToolDefinition(
-            name="analyze_risk",
-            description="Analyze operational and security risk findings.",
-            input_schema=empty_schema,
-            handler=analyze_risk_main,
-        )
-        self.tools["generate_executive_report"] = ToolDefinition(
-            name="generate_executive_report",
-            description="Generate executive cloud intelligence report from cost and risk analysis.",
-            input_schema=empty_schema,
-            handler=generate_executive_report_main,
-        )
-
-    def _send_response(self, request_id: Any, result: Dict[str, Any]) -> None:
-        payload = {"jsonrpc": "2.0", "id": request_id, "result": result}
-        print(json.dumps(payload), flush=True)
-
-    def _send_error(self, request_id: Any, code: int, message: str) -> None:
-        payload = {
-            "jsonrpc": "2.0",
-            "id": request_id,
-            "error": {"code": code, "message": message},
-        }
-        print(json.dumps(payload), flush=True)
-
-    def _list_tools(self) -> Dict[str, Any]:
-        return {
-            "tools": [
-                {
-                    "name": tool.name,
-                    "description": tool.description,
-                    "inputSchema": tool.input_schema,
-                }
-                for tool in self.tools.values()
-            ]
-        }
-
-    def _call_tool(self, name: str, arguments: Optional[Dict[str, Any]]) -> Dict[str, Any]:
-        del arguments
-
-        tool = self.tools.get(name)
-        if not tool:
-            raise ValueError(f"Unknown tool: {name}")
-
-        raw_output = tool.handler()
-        parsed_output = json.loads(raw_output)
-
-        return {
-            "content": [
-                {
-                    "type": "text",
-                    "text": json.dumps(parsed_output, indent=2),
-                }
-            ],
-            "structuredContent": parsed_output,
-            "isError": False,
-        }
-
-    def handle_request(self, request: Dict[str, Any]) -> None:
-        request_id = request.get("id")
-        method = request.get("method")
-        params = request.get("params", {})
-
-        try:
-            if method == "initialize":
-                self._send_response(
-                    request_id,
-                    {
-                        "protocolVersion": "2024-11-05",
-                        "serverInfo": self.server_info,
-                        "capabilities": {"tools": {}},
-                    },
-                )
-                return
-
-            if method == "tools/list":
-                self._send_response(request_id, self._list_tools())
-                return
-
-            if method == "tools/call":
-                tool_name = params.get("name")
-                tool_args = params.get("arguments", {})
-                self._send_response(request_id, self._call_tool(tool_name, tool_args))
-                return
-
-            if method == "notifications/initialized":
-                return
-
-            self._send_error(request_id, -32601, f"Method not found: {method}")
-
-        except ValueError as error:
-            self._send_error(request_id, -32602, str(error))
-        except Exception as error:  # pylint: disable=broad-except
-            LOGGER.exception("Server error while handling method '%s'", method)
-            self._send_error(request_id, -32000, str(error))
-
-    def run(self) -> None:
-        """Start the MCP request loop over stdio."""
-        LOGGER.info("CloudOps MCP Server started")
-
-        for line in sys.stdin:
-            line = line.strip()
-            if not line:
-                continue
-
-            try:
-                request = json.loads(line)
-            except json.JSONDecodeError:
-                self._send_error(None, -32700, "Parse error")
-                continue
-
-            if isinstance(request, list):
-                for item in request:
-                    if isinstance(item, dict):
-                        self.handle_request(item)
-                continue
-
-            if isinstance(request, dict):
-                self.handle_request(request)
+@mcp.tool(description="Generate executive cloud intelligence report from cost and risk analysis.")
+def generate_executive_report() -> Dict[str, Any]:
+    """Return executive report with cloud health score, maturity level, and top recommendations."""
+    LOGGER.info("Tool execution started: generate_executive_report")
+    try:
+        result = json.loads(generate_executive_report_main())
+        LOGGER.info("Tool execution completed: generate_executive_report")
+        return result
+    except Exception as error:
+        LOGGER.error("Tool execution failed: generate_executive_report — %s", error)
+        raise
 
 
 def main() -> None:
-    """Startup entry point for running the CloudOps MCP server."""
-    server = CloudOpsMCPServer()
-    server.run()
+    """Startup entry point for running the CloudOps MCP server over stdio."""
+    LOGGER.info("CloudOps MCP Server starting — %s v%s", SERVER_NAME, SERVER_VERSION)
+    mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":
