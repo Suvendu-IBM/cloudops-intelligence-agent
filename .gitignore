@@ -216,3 +216,24 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+*.zip
+
+azure-deploy/verify/
+azure-deploy/verifyzip/
+
+__pycache__/
+*.pyc
+
+.env
+.env.*
+# Deployment artifacts
+deploy/
+azure-deploy/verify/
+azure-deploy/verifyzip/
+
+# Build packages
+*.zip
+
+# Python cache
+__pycache__/
+*.pyc
