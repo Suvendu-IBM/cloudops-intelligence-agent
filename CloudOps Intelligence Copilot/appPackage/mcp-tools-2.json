@@ -1,0 +1,73 @@
+{
+    "tools": [
+        {
+            "name": "analyze_cost",
+            "description": "Analyze cloud cost optimization opportunities across Azure, AWS, and GCP.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+                "title": "analyze_costArguments"
+            },
+            "outputSchema": {
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "additionalProperties": true,
+                        "title": "Result",
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "result"
+                ],
+                "title": "analyze_costOutput"
+            }
+        },
+        {
+            "name": "analyze_risk",
+            "description": "Analyze operational and security risk findings across cloud resources.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+                "title": "analyze_riskArguments"
+            },
+            "outputSchema": {
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "additionalProperties": true,
+                        "title": "Result",
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "result"
+                ],
+                "title": "analyze_riskOutput"
+            }
+        },
+        {
+            "name": "generate_executive_report",
+            "description": "Generate executive cloud intelligence report from cost and risk analysis.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+                "title": "generate_executive_reportArguments"
+            },
+            "outputSchema": {
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "additionalProperties": true,
+                        "title": "Result",
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "result"
+                ],
+                "title": "generate_executive_reportOutput"
+            }
+        }
+    ]
+}

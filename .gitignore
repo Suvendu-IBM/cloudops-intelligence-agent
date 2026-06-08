@@ -237,3 +237,7 @@ azure-deploy/verifyzip/
 # Python cache
 __pycache__/
 *.pyc
+# M365 Agent Toolkit generated files
+CloudOps Intelligence Copilot/appPackage/build/
+CloudOps Intelligence Copilot/env/.env.dev.user
+CloudOps Intelligence Copilot/env/.env.dev

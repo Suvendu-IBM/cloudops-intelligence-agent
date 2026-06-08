@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "cloudopsmc": {
+      "type": "http",
+      "url": "https://cloudops-mcp-suvendu.azurewebsites.net/mcp"
+    }
+  }
+}
