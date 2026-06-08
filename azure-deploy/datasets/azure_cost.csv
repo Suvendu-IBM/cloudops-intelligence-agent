@@ -1,0 +1,6 @@
+resource_name,monthly_cost,cpu_utilization,cloud
+WEB01,300,5,Azure
+APP01,450,12,Azure
+DB01,1200,80,Azure
+EC2-Test,250,3,AWS
+GCP-VM01,180,8,GCP

@@ -1,0 +1,5 @@
+resource_name,backup_enabled,storage_utilization,public_endpoint
+WEB01,no,90,yes
+DB01,yes,60,no
+APP01,no,70,no
+EC2-Test,no,88,yes
