@@ -1,7 +1,0 @@
-{
-    "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.7/schema.json",
-    "version": "v1.7",
-    "name": "CloudOps Intelligence Agent${{APP_NAME_SUFFIX}}",
-    "description": "Enterprise AI agent for Microsoft 365 Copilot that helps cloud and platform teams optimize cloud costs, assess operational risks, and generate executive cloud governance insights.",
-    "instructions": "$[file('instruction.txt')]"
-}
