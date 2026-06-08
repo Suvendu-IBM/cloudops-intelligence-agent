@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 import uvicorn
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Mount, Route
@@ -22,13 +23,28 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s] %(name)s - %(message)s",
 )
-LOGGER = logging.getLogger(SERVER_NAME)
 
+LOGGER = logging.getLogger(SERVER_NAME)
 
 mcp = FastMCP(
     name=SERVER_NAME,
     stateless_http=True,
     json_response=True,
+
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=[
+            "cloudops-mcp-suvendu.azurewebsites.net",
+            "localhost:*",
+            "127.0.0.1:*",
+        ],
+        allowed_origins=[
+            "https://cloudops-mcp-suvendu.azurewebsites.net",
+            "http://localhost:*",
+            "http://127.0.0.1:*",
+        ],
+    ),
+
     instructions=(
         "CloudOps Intelligence Agent MCP server for Microsoft 365 Copilot. "
         "Capabilities: "
@@ -55,9 +71,9 @@ def analyze_cost() -> Dict[str, Any]:
         LOGGER.info("Tool execution completed: analyze_cost")
         return result
 
-    except Exception as error:
+    except Exception:
         LOGGER.exception("Tool execution failed: analyze_cost")
-        raise error
+        raise
 
 
 @mcp.tool(
@@ -71,9 +87,9 @@ def analyze_risk() -> Dict[str, Any]:
         LOGGER.info("Tool execution completed: analyze_risk")
         return result
 
-    except Exception as error:
+    except Exception:
         LOGGER.exception("Tool execution failed: analyze_risk")
-        raise error
+        raise
 
 
 @mcp.tool(
@@ -87,9 +103,9 @@ def generate_executive_report() -> Dict[str, Any]:
         LOGGER.info("Tool execution completed: generate_executive_report")
         return result
 
-    except Exception as error:
+    except Exception:
         LOGGER.exception("Tool execution failed: generate_executive_report")
-        raise error
+        raise
 
 
 async def health_check(request):
@@ -115,7 +131,9 @@ async def app_lifespan(_: Starlette):
 app = Starlette(
     routes=[
         Route("/healthz", health_check),
-        # FastMCP owns /mcp internally; mount it at the app root.
+
+        # FastMCP internally exposes /mcp
+        # Therefore mount at root.
         Mount("/", app=mcp.streamable_http_app()),
     ],
     lifespan=app_lifespan,
