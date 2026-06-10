@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 
-DATASET_PATH = Path(__file__).resolve().parents[1] / "datasets" / "risk_data.csv"
+DATASET_PATH = Path("/home/site/wwwroot/datasets/risk_data.csv")
 
 
 def get_overall_risk_rating(overall_risk_score: float) -> str:

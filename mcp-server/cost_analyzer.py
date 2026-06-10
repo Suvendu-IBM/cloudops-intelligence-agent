@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 
-DATASET_PATH = Path(__file__).resolve().parents[1] / "datasets" / "azure_cost.csv"
+DATASET_PATH = Path("/home/site/wwwroot/datasets/azure_cost.csv")
 
 
 def get_optimization_priority(cpu_utilization: float) -> str:
