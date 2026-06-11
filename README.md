@@ -42,6 +42,11 @@ Most enterprises face a recurring cloud operations gap:
 LLM-only conversational systems can summarize information, but they often lack deterministic execution and auditable reasoning paths needed for enterprise governance.
 
 ## Solution Overview
+
+![CloudOps Intelligence Copilot Architecture](docs/architecture/cloudops-architecture.png)
+
+*CloudOps Intelligence Copilot architecture showing Microsoft 365 Copilot, Declarative Agent, Remote MCP Actions, Azure App Service hosting a Python FastMCP server, and specialized intelligence engines for cost optimization, risk assessment, and executive governance reporting.*
+
 CloudOps Intelligence Copilot introduces a layered enterprise architecture that separates:
 
 - Reasoning and conversational interface: Microsoft 365 Copilot
@@ -50,8 +55,6 @@ CloudOps Intelligence Copilot introduces a layered enterprise architecture that 
 - Deterministic execution layer: Azure-hosted Python FastMCP server
 
 This allows Copilot to move from chat-based responses to actionable cloud intelligence tasks with explainable outputs.
-
-![CloudOps Architecture](docs/architecture/cloudops-architecture.png)
 
 ## Judges Quick View
 | Capability | Status |
