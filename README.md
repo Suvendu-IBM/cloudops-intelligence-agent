@@ -185,35 +185,36 @@ Evidence included:
 
 Execution artifacts in repository:
 
-- MCP invocation logs screenshot: [docs/screenshots/04-mcp-cost-execution.png](docs/screenshots/04-mcp-cost-execution.png)
-- Cost analysis output screenshot: [docs/screenshots/01-cost-analysis.png](docs/screenshots/01-cost-analysis.png)
-- Risk analysis output screenshot: [docs/screenshots/02-risk-analysis.png](docs/screenshots/02-risk-analysis.png)
-- Executive report output screenshot: [docs/screenshots/03-executive-report.png](docs/screenshots/03-executive-report.png)
+- Agent home screenshot: [docs/screenshots/01-agent-home.png](docs/screenshots/01-agent-home.png)
+- Cost analysis output screenshot: [docs/screenshots/02-cost-analysis.png](docs/screenshots/02-cost-analysis.png)
+- Risk analysis output screenshot: [docs/screenshots/03-risk-analysis.png](docs/screenshots/03-risk-analysis.png)
+- Executive report output screenshot: [docs/screenshots/04-executive-report.png](docs/screenshots/04-executive-report.png)
+- MCP invocation logs screenshot: [docs/screenshots/05-mcp-cost-execution.png](docs/screenshots/05-mcp-cost-execution.png)
 
 ## Screenshots
 ### Agent Home Experience
-![Agent Home](docs/screenshots/05-agent-home.png)
+![Agent Home](docs/screenshots/01-agent-home.png)
 
 ### Cost Optimization Analysis
-![Cost Analysis](docs/screenshots/01-cost-analysis.png)
+![Cost Analysis](docs/screenshots/02-cost-analysis.png)
 
 ### Risk Assessment
-![Risk Assessment](docs/screenshots/02-risk-analysis.png)
+![Risk Assessment](docs/screenshots/03-risk-analysis.png)
 
 ### Executive Governance Report
-![Executive Report](docs/screenshots/03-executive-report.png)
+![Executive Report](docs/screenshots/04-executive-report.png)
 
 ### MCP Tool Execution Evidence
-![MCP Execution](docs/screenshots/04-mcp-cost-execution.png)
+![MCP Execution](docs/screenshots/05-mcp-cost-execution.png)
 
 ## Demonstrated Scenarios
 | Screenshot | Scenario |
 |---|---|
-| 05-agent-home.png | Declarative Agent in Microsoft 365 Copilot |
-| 01-cost-analysis.png | FinOps optimization analysis |
-| 02-risk-analysis.png | Operational and security risk assessment |
-| 03-executive-report.png | Executive cloud governance report |
-| 04-mcp-cost-execution.png | Azure App Service MCP execution logs |
+| 01-agent-home.png | Declarative Agent in Microsoft 365 Copilot |
+| 02-cost-analysis.png | FinOps optimization analysis |
+| 03-risk-analysis.png | Operational and security risk assessment |
+| 04-executive-report.png | Executive cloud governance report |
+| 05-mcp-cost-execution.png | Azure App Service MCP execution logs |
 
 ## Repository Structure
 ```text
@@ -237,11 +238,11 @@ Execution artifacts in repository:
 │   ├── architecture/
 │   │   └── cloudops-architecture.png
 │   ├── screenshots/
-│   │   ├── 01-cost-analysis.png
-│   │   ├── 02-risk-analysis.png
-│   │   ├── 03-executive-report.png
-│   │   ├── 04-mcp-cost-execution.png
-│   │   └── 05-agent-home.png
+│   │   ├── 01-agent-home.png
+│   │   ├── 02-cost-analysis.png
+│   │   ├── 03-risk-analysis.png
+│   │   ├── 04-executive-report.png
+│   │   └── 05-mcp-cost-execution.png
 │   └── submission/
 │       ├── architecture-notes.md
 │       └── demo-script.md
