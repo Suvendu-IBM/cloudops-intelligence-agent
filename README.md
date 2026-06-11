@@ -43,7 +43,7 @@ LLM-only conversational systems can summarize information, but they often lack d
 
 ## Solution Overview
 
-![CloudOps Intelligence Copilot Architecture](docs/architecture/cloudops-architecture.png)
+![CloudOps Intelligence Copilot Architecture](docs/architecture/cloudops-architecture.jpg)
 
 *CloudOps Intelligence Copilot architecture showing Microsoft 365 Copilot, Declarative Agent, Remote MCP Actions, Azure App Service hosting a Python FastMCP server, and specialized intelligence engines for cost optimization, risk assessment, and executive governance reporting.*
 
@@ -102,49 +102,6 @@ The solution uses MCP-based deterministic tool execution to transform conversati
 - Remote MCP Action: Protocol bridge between Copilot and tools
 - Azure App Service Remote MCP Host: Secure hosted runtime endpoint
 - Python FastMCP Server: Deterministic execution of governance intelligence tools
-
-### Architecture Diagram (Deployed Flow)
-```mermaid
-flowchart TD
-U[Enterprise User]
-
-U --> C[Microsoft 365 Copilot]
-
-C --> D[CloudOps Intelligence Copilot
-Declarative Agent]
-
-D --> A[Remote MCP Action]
-
-A --> AP[Azure App Service
-Remote MCP Host]
-
-AP --> M[MCP Server
-Python FastMCP]
-
-M --> T1[analyze_cost]
-M --> T2[analyze_risk]
-M --> T3[generate_executive_report]
-
-T1 --> E1[Cost Intelligence Engine]
-T2 --> E2[Risk Intelligence Engine]
-T3 --> E3[Executive Intelligence Engine]
-
-E1 --> DS[Azure • AWS • GCP
-Sample Cloud Dataset]
-E2 --> DS
-E3 --> DS
-
-DS --> R[Actionable Recommendations
-& Executive Insights]
-
-R --> C
-
-style C fill:#0078D4,color:#ffffff
-style D fill:#6264A7,color:#ffffff
-style AP fill:#00A4EF,color:#ffffff
-style M fill:#107C10,color:#ffffff
-style R fill:#FF8C00,color:#ffffff
-```
 
 ## Technology Stack
 | Layer | Technologies |
