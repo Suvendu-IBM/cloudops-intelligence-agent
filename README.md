@@ -373,7 +373,7 @@ Demo video demonstrating:
 - Azure-hosted Deployment
 
 Video URL:
-TBD (Hackathon Submission)
+[https://youtu.be/zXElZxzfRIM](https://youtu.be/zXElZxzfRIM)
 
 ## Hackathon Submission Conclusion
 CloudOps Intelligence Copilot is a real-world Enterprise Agent blueprint: Copilot-native user experience, MCP-driven deterministic execution, Azure-hosted scale, and leadership-focused business impact.
